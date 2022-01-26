@@ -1,2 +1,24 @@
-# v2ray
-使用v2ray-core开发的GUI界面
+# v2rays
+
+## Project setup
+```
+pnpm install
+```
+
+### Compiles and hot-reloads for development
+```
+pnpm run serve
+```
+
+### Compiles and minifies for production
+```
+pnpm run build
+```
+
+### Lints and fixes files
+```
+pnpm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
