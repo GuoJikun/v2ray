@@ -1,9 +1,12 @@
 "use strict";
 
-import { app, protocol, BrowserWindow } from "electron";
+import { app, protocol, BrowserWindow, Menu, ipcMain } from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 const isDevelopment = process.env.NODE_ENV !== "production";
+import { menuList as getMenuList } from "@/utils/data.js";
+
+const isMac = process.platform === "darwin";
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -13,8 +16,13 @@ protocol.registerSchemesAsPrivileged([
 async function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
+    // frame: false,
     width: 1200,
     height: 800,
+    minHeight: 600,
+    minWidth: 600,
+    titleBarStyle: "hiddenInset",
+    titleBarOverlay: true,
     webPreferences: {
       // Use pluginOptions.nodeIntegration, leave this alone
       // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
@@ -62,7 +70,25 @@ app.on("ready", async () => {
     }
   }
   createWindow();
-  app.setApplicationMenu(null);
+  const menuList = getMenuList(app, isMac);
+
+  Menu.setApplicationMenu(Menu.buildFromTemplate(menuList));
+});
+
+// main
+ipcMain.on("show-context-menu", (event) => {
+  const template = [
+    {
+      label: "Menu Item 1",
+      click: () => {
+        event.sender.send("context-menu-command", "menu-item-1");
+      },
+    },
+    { type: "separator" },
+    { label: "Menu Item 2", type: "checkbox", checked: true },
+  ];
+  const menu = Menu.buildFromTemplate(template);
+  menu.popup(BrowserWindow.fromWebContents(event.sender));
 });
 
 // Exit cleanly on request from parent process in development mode.

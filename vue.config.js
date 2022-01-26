@@ -5,6 +5,7 @@ const { ElementPlusResolver } = require("unplugin-vue-components/resolvers");
 module.exports = {
   pluginOptions: {
     electronBuilder: {
+      nodeIntegration: true,
       builderOptions: {
         appId: "com.client.v2ray",
         productName: "v2ray-client",
@@ -17,10 +18,11 @@ module.exports = {
           target: [
             {
               target: "nsis",
-              arch: ["x64", "ia32"],
+              arch: ["x64"],
             },
           ],
         },
+
         nsis: {
           oneClick: false,
           allowElevation: true,
