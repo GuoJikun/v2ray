@@ -14,7 +14,7 @@ module.exports = {
           output: "./dist_electron",
         },
         win: {
-          icon: "./public/favicon.ico",
+          icon: "./public/logo-256.png",
           target: [
             {
               target: "nsis",

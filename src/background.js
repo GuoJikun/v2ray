@@ -76,16 +76,83 @@ app.on("ready", async () => {
 });
 
 // main
-ipcMain.on("show-context-menu", (event) => {
+ipcMain.on("show-context-menu", (event, command) => {
   const template = [
     {
-      label: "Menu Item 1",
+      label: "设为活动服务器",
       click: () => {
-        event.sender.send("context-menu-command", "menu-item-1");
+        event.sender.send("context-menu-command", {
+          id: command,
+          type: "check",
+        });
       },
     },
     { type: "separator" },
-    { label: "Menu Item 2", type: "checkbox", checked: true },
+    {
+      label: "移除当前服务器",
+      click: () => {
+        event.sender.send("context-menu-command", { id: command, type: "del" });
+      },
+    },
+    {
+      label: "移除所选服务器",
+      click: () => {
+        event.sender.send("context-menu-command", { id: command, type: "del" });
+      },
+    },
+    {
+      label: "移除重复服务器",
+      click: () => {
+        event.sender.send("context-menu-command", { id: command, type: "del" });
+      },
+    },
+    {
+      label: "移除所有服务器",
+      click: () => {
+        event.sender.send("context-menu-command", { id: command, type: "del" });
+      },
+    },
+    { type: "separator" },
+    {
+      label: "上移至顶部",
+      click: () => {
+        event.sender.send("context-menu-command", {
+          id: command,
+          type: "sort",
+          index: "top",
+        });
+      },
+    },
+    {
+      label: "上移",
+      click: () => {
+        event.sender.send("context-menu-command", {
+          id: command,
+          type: "sort",
+          index: "-1",
+        });
+      },
+    },
+    {
+      label: "下移",
+      click: () => {
+        event.sender.send("context-menu-command", {
+          id: command,
+          type: "sort",
+          index: "+1",
+        });
+      },
+    },
+    {
+      label: "下移至底部",
+      click: () => {
+        event.sender.send("context-menu-command", {
+          id: command,
+          type: "sort",
+          index: "bottom",
+        });
+      },
+    },
   ];
   const menu = Menu.buildFromTemplate(template);
   menu.popup(BrowserWindow.fromWebContents(event.sender));
